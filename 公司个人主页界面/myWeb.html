@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>myWeb</title>
+		<script src="js/jquery-3.4.1.min.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script type="text/javascript" src="js/vue-router.min.js"></script>
+		<link rel="stylesheet" href="css/GoustButton.css" />
+		<style>
+			.headbox {
+				height: 400px;
+				width: 100%;
+			}
+			.onhead {
+				height: 400px;
+				width: 100%;
+				background-image: url("img/1.jpg");
+				background-position: center center;
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-size: cover;
+				z-index: -10;
+			}
+			.title-time {
+				position: absolute;
+				left: 80px;
+				top: 100px;
+				color: rgb(106,91,70);
+			}
+			.title-time .year {
+				font-size: 50px;
+				line-height: 50px;
+			}
+			.title-time .month {
+				font-size: 30px;
+				line-height: 30px;
+			}
+			.title-time .time-separatrix {
+				height: 2px;
+				width: 200px;
+				background-color: rgb(106,91,70);
+				margin: 10px 0;
+			}
+			.title-time .time {
+				font-weight: 800;
+			}
+			.title-time .text {
+				font-weight: 100;
+				font-size: 18px;
+			}
+			
+			.titlebox {
+				width: 100%;				
+				background-color: #000000;
+				margin: 0;
+				padding: 5px;
+				text-align: center;
+			}
+			.titlebox .button {
+				height: 20px;
+				width: 15px;
+				margin: 0 auto;
+			}
+			.titlebox .button .item {
+				height: 2px;
+				width: 15px;
+				margin: 2px 0;
+				background-color: rgb(106,91,70);
+			}
+			
+			.titlebox .linkbox {
+				padding: 5px 2px ;
+				margin: 0 auto;
+				line-height: 20px;
+			}
+			.titlebox .linkbox .link {
+				margin: auto 15px;
+				color: #ADB5BD;
+				font-size: 12px;
+				font-weight: 100;
+			}
+			
+			.paging {
+				height: 2px;
+				width: 100px;
+				margin: 0px auto;
+				background-color: rgb(106,91,70);
+			}
+			.paging-text {
+				width: 100px;
+				margin: 30px auto 10px auto;
+				text-align: center;
+			}
+			
+			.about-text {
+				width: 300px;
+				margin: 30px auto ;
+				text-align: center;
+			}
+			.about-text .t {
+				margin: 5px auto;
+				font-size: 13px;
+			}
+			
+			
+			.my-work {
+				overflow:hidden;
+				width: 700px;
+				height: 100%;
+				margin: 0 auto;
+				padding: 10px 10px 10px 20px;
+			}
+			.my-work .works {
+				float: left;
+				width: 180px;
+				height: 180px;
+				margin: 20px;
+				padding: 5px;
+				text-align: center;
+				position: relative;
+			}
+			.my-work .works .img {
+				height: 150px;
+				width: 150px;
+				z-index: -10;
+				transition:  0.2s linear;
+				-webkit-transition: 0.2s linear;
+				-moz-transition: 0.2s linear;
+				-o-transition: 0.2s linear;
+			}
+			.my-work .works .describe {
+				height: 120px;
+				width: 120px;
+				font-size: 13px;
+				position: absolute;
+				top: 35px;
+				left: 35px;
+				opacity: 0;
+				color: whitesmoke;
+				transition:  0.2s ease;
+				-webkit-transition: 0.5s ease;
+				-moz-transition: 0.5s ease;
+				-o-transition: 0.5s ease;
+			}
+			.my-work .works .back {
+				height: 180px;
+				width: 180px;
+				position: absolute;
+				top: 5px;
+				left: 5px;
+				background-color: #000000;
+				opacity: 0;
+				z-index: -5;
+				transition:  0.5s ease;
+				-webkit-transition: 0.5s ease;
+			}
+			.my-work .works:hover .back {
+				opacity: 0.8;
+			}
+			.my-work .works:hover .describe {
+				opacity: 1;
+				
+			}
+			.my-work .works:hover .img {
+				transform:  scale(1.2);
+				-webkit-transform: scale(1.2);
+			}
+			
+			.onfoot {
+				height: 350px;
+				width: 100%;
+				background-image: url("img/1.jpg");
+				background-position: center center;
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-size: cover;
+				z-index: -10;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<div class="titlebox">
+				<div class="button" @click="titleflag=!titleflag">
+					<div class="item"></div>
+					<div class="item"></div>
+					<div class="item"></div>
+					<div class="item"></div>
+				</div>
+				<span class="linkbox" v-show="titleflag">
+					<a href="#1" class="link">内容内容</a>
+					<a href="#2" class="link">内容内容</a>
+					<a href="#" class="link">内容内容</a>
+				</span>
+			</div>
+			<div class="headbox">
+				<div class="onhead"></div>
+				<div class="title-time">
+					<div class="year">{{ currentTime | getyear }}</div>
+					<div class="month">{{ currentTime | getmonth }}</div>
+					<div class="time-separatrix"></div>
+					<div class="time">▶ ▶ ▶ ▶ ▶ ▶ ▶ {{ currentTime | gettime }}</div>
+					<div class="text">Do not go gentle into that good night.</div>
+				</div>
+			</div>
+			
+			<div class="paging-text">START</div>
+			<paging></paging>
+			
+			<div class="box" >
+				<div class="link link-tag">
+					<img class="icon" src="img/标签.png"></img><br />
+					<a href="#" class="button">
+						<span class="line line-top"></span>
+						<span class="line line-bottom"></span>
+						<span class="line line-left"></span>
+						<span class="line line-right"></span>
+						<img class="rightIcon" src="img/右.png" /> TAG
+					</a>
+				</div>
+				<div class="link link-collect">
+					<img class="icon" src="img/收藏.png"></img><br />
+					<a href="#" class="button">
+						<span class="line line-top"></span>
+						<span class="line line-bottom"></span>
+						<span class="line line-left"></span>
+						<span class="line line-right"></span>
+						<img class="rightIcon" src="img/右.png" /> COLLECT
+					</a>
+				</div>
+				<div class="link link-new">
+					<img class="icon" src="img/刷新.png"></img><br />
+					<a href="#" class="button">
+						<span class="line line-top"></span>
+						<span class="line line-bottom"></span>
+						<span class="line line-left"></span>
+						<span class="line line-right"></span>
+						<img class="rightIcon" src="img/右.png" /> NEW
+					</a>
+				</div>
+			</div>
+			
+			<div class="paging-text" id="1">ABOUT ME</div>
+			<paging></paging>
+			<div class="about-text">
+				<span class="t">江苏·南京</span><br />
+				<span class="t">东南大学·软件工程</span><br />
+				<span class="t">编程·平面设计·文案</span>
+			</div>
+			
+			<div class="paging-text" id="2">MY WORKS</div>
+			<paging></paging>
+			<div class="my-work">
+				<div v-for="item in worklist" class="works">
+					<img :src="item.img" class="img"/>
+					<div class="describe">{{item.describe}}</div>
+					<div class="back"></div>
+				</div>
+			</div>
+
+			<div class="paging-text" id="3">MY WORKS</div>
+			<paging></paging>
+			<div class="my-work">
+				<div v-for="item in worklist" class="works">
+					<img :src="item.img" class="img"/>
+					<div class="describe">{{item.describe}}</div>
+					<div class="back"></div>
+				</div>
+			</div>
+			
+			<div class="onfoot"></div>
+			
+			
+		</div>
+		
+		
+		<template id="paging">
+			<div class="paging"></div>
+		</template>
+
+		<script>
+			
+			var paging = {
+				template:"#paging"
+			}			
+
+			
+			//自定义时间过滤器
+			Vue.filter('getyear',function(dateStr){
+				var y = dateStr.getFullYear();
+				return y;
+			})
+			Vue.filter('getmonth',function(dateStr){
+				var m = dateStr.getMonth();
+				var mon = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+				m = mon[m];
+				m = m.toUpperCase();
+				return m;
+			})
+			Vue.filter('gettime',function(dateStr){
+				var hh = dateStr.getHours().toString().padStart(2,'0');
+				var mm = dateStr.getMinutes().toString().padStart(2,'0');
+				var ss = dateStr.getSeconds().toString().padStart(2,'0');
+				return `${hh}:${mm}:${ss}`;
+			})
+
+			
+			var vm = new Vue({
+				el:'#app',
+				data: {
+					timer:'',
+					currentTime: new Date(),
+					titleflag:false,
+					worklist:[
+					{img:'img/shop.png',describe:"基于人脸识别的新零售系统，提供针对每个用户的个性化推荐，应用于无人商店，用户可扫描跳码查看商品详情、完成购买。"},
+					{img:'img/shop.png',describe:"基于人脸识别的新零售系统，提供针对每个用户的个性化推荐，应用于无人商店，用户可扫描跳码查看商品详情、完成购买。"},
+					{img:'img/shop.png',describe:"基于人脸识别的新零售系统，提供针对每个用户的个性化推荐，应用于无人商店，用户可扫描跳码查看商品详情、完成购买。"},
+					{img:'img/shop.png',describe:"基于人脸识别的新零售系统，提供针对每个用户的个性化推荐，应用于无人商店，用户可扫描跳码查看商品详情、完成购买。"},
+					{img:'img/shop.png',describe:"基于人脸识别的新零售系统，提供针对每个用户的个性化推荐，应用于无人商店，用户可扫描跳码查看商品详情、完成购买。"},
+					{img:'img/shop.png',describe:"基于人脸识别的新零售系统，提供针对每个用户的个性化推荐，应用于无人商店，用户可扫描跳码查看商品详情、完成购买。"}
+					]
+				},
+				methods: {
+					
+				},
+				created(){
+					this.timer=setInterval(()=>{
+						this.currentTime=new Date();
+					},1000)
+				},
+				beforeDestroy(){
+					if(this.timer){
+						clearInterval(this.timer);
+					}
+				},
+				components:{
+					paging:paging,
+				}
+				
+			})
+		</script>
+	</body>
+
+</html>
