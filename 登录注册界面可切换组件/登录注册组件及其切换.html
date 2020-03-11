@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录注册界面</title>
+		<script type="text/javascript" src="js/vue.js" ></script>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.4.1.min.js" ></script>
+		<style>
+			
+			body{
+    			background: url("img/1.jpg") no-repeat;
+    			background-attachment:fixed;
+    			background-size: cover;
+  				-webkit-background-size: cover;
+    			/*animation-name:mymove;
+    			animation-duration:12s;
+    			animation-delay:2s;
+    			animation-iteration-count:infinite;
+    			animation-play-state:running;
+    			backface-visibility:hidden;
+    			-webkit-backface-visibility: hidden;
+    			-webkit-transform-style: preserve-3d;*/
+			}
+			@-webkit-keyframes mymove
+			{
+    			0%   {background:url("img/1.jpg") no-repeat; background-attachment:fixed;background-size: cover;-webkit-background-size: cover;}
+    			34%  {background:url("img/2.jpg") no-repeat; background-attachment:fixed;background-size: cover;-webkit-background-size: cover;}
+    			67%  {background:url("img/3.jpg") no-repeat; background-attachment:fixed;background-size: cover;-webkit-background-size: cover;}
+    			100% {background:url("img/1.jpg") no-repeat; background-attachment:fixed;background-size: cover;-webkit-background-size: cover;}
+			}
+			.loginbox{
+				width: 500px;
+				height: 370px;
+				padding: 10px;
+				margin: auto;
+				margin-top: 100px;
+				border: 1px solid #EBEBEB;
+				border-radius: 10px;
+				background-color: rgba(255,255,255,0.5);
+			}
+			.btn:focus,.btn:active:focus,
+			.btn.active:focus,.btn.focus,
+			.btn:active.focus,.btn.active.focus {   				  
+ 				box-shadow:none;
+			}
+			.v-enter,
+			.v-leave-to{
+				opacity: 0;
+				transform: translateY(100px);
+			}
+			.v-enter-active,
+			.v-leave-active{
+				transition: all 0.3s ease;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<div class="loginbox">
+				<div class="btn-group btn-block" style=" margin-bottom: 20px;">
+					<button class="btn" style="border-right: 1px solid #EBEBEB;" @click="toLogin">Login</button>
+					<button class="btn"  @click="toRegister">Register</button>
+				</div>
+				<!--用 mode 控制动画切换模式-->
+				<transition mode="out-in">
+					<!--利用 component :is="componentName" 进行组件的切换-->
+					<component :is="componentName"></component>
+				</transition>				
+			</div>
+		</div>
+		
+		<template id="login">
+			<div>
+					<div class="form-group">
+						<label>UserName</label>
+						<input type="text" class="form-control" placeholder="Username" v-model="username" />
+					</div>
+					<div class="form-group">
+						<label>PassWord</label>
+						<input type="password" class="form-control" placeholder="Password" v-model="pword" />
+						<span style="float: right;color: #C82333;">{{hint}}</span>
+					</div>
+					<button class="btn btn-block btn-dark" style="margin-top: 40px;" @click="login">Login</button>
+				
+			</div>
+		</template>
+		
+		<template id="register">
+			<div>
+				<div class="form-group">
+					<label>UserName</label>
+					<input type="text" class="form-control" placeholder="Username" v-model="username" />
+				</div>
+				<div class="form-group">
+					<label>PassWord</label>
+					<input type="password" class="form-control" placeholder="Password" v-model="pword"/>
+					<input type="password" class="form-control"  style="margin-top: 10px;" placeholder="Repeat input your password" v-model="rword"/>
+					<span style="float: right;color: #C82333;">{{hint}}</span>
+				</div>
+				<button class="btn btn-block btn-dark" style="margin-top: 30px;" @click="register">Register</button>
+			</div>
+		</template>
+
+		<script>
+			
+			//登录组件
+			Vue.component('login',{
+				template:"#login",
+				data:function(){
+					return {
+						username:'',
+						pword:'',
+						hint:''
+					}
+				},
+				methods: {
+					login:function(){
+						var that = this;
+						if(this.username==''|| this.pword==''){
+							this.hint="Please complete the empty place"
+							return
+						}
+						$.ajax({
+							type:"post",
+							url:"login.php",
+							data: {
+								username:this.username,
+								pword:this.pword
+							},
+							success:function(data){
+								that.hint=data;
+							}
+						});
+					}
+				}
+			})
+			
+			//注册组件
+			Vue.component('register',{
+				template:"#register",
+				data:function(){
+					return {
+						username:'',
+						pword:'',
+						rword:'',
+						hint:''
+					}
+				},
+				methods: {
+					register:function(){
+						if(this.username==''||this.pword==''||this.rword==''){
+							this.hint="Please complete the empty place"
+							return
+						}else if(this.pword!==this.rword){
+							this.hint="Your two inputs are different"
+							return
+						}else{
+							var that = this;
+							$.ajax({
+							type:"post",
+							url:"register.php",
+							data: {
+								username:this.username,
+								pword:this.pword
+							},
+							success:function(data){
+								that.hint=data;
+							}
+							});
+						}
+					}
+				}
+			})
+			
+			
+			var vm = new Vue({
+				el: "#app",
+				data: {
+					componentName:'login'
+				},
+				methods: {
+					toLogin:function(){
+						this.componentName="login"
+					},
+					toRegister:function(){
+						this.componentName="register"
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
