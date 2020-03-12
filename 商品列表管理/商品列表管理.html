@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>商品列表管理</title>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/bootstrap-responsive.css" />
+		<style>
+			.v-enter,
+			.v-leave-to{
+				opacity: 0;
+				transform: translateY(50px);
+			}
+			.v-enter-active,
+			.v-leave-active{
+				transition: all 0.3s ease;
+			}
+			.v-move{
+				transition: all 0.5s ease;
+			}
+			.v-leave-active{
+				position: absolute;
+			}
+			tr{
+				width: 100%;
+			}
+			/*tr:hover{
+				background-color: #86CFDA;
+			}*/
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<div class="form-inline panel panel-body">
+				<label>
+					Id:
+					<input v-model="gid" placeholder="请输入商品编号" class="form-control"/>
+				</label>
+				<label>
+					Name:
+					<input v-model="gname" placeholder="请输入商品名称" class="form-control" @keyup.enter="add"/>
+				</label>
+				
+				<input type="button" value="添加" class="btn btn-primary" @click="add"/>
+				
+				<label>
+					搜索关键字:
+					<input v-model="keywords"  class="form-control" v-focus v-color="'blue'" />
+				</label>				
+			</div>
+			<table class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>商品编号</th>
+						<th>商品名称</th>
+						<th>添加时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody is="transition-group">
+					<tr v-for="item in search(keywords)" :key="item.id">
+						<td>{{item.id}}</td>
+						<td>{{item.name}}</td>
+						<td>{{item.addtime | dateSet }}</td>
+						<td>
+							<a href="" @click.prevent="del(item.id)">删除</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<script>
+			//全局过滤器，时间格式自定义
+			Vue.filter('dateSet',function(dateStr){
+				var y = dateStr.getFullYear();
+				var m = (dateStr.getMonth()+1).toString().padStart(2,'0');
+				var d = dateStr.getDate().toString().padStart(2,'0');
+				var h = dateStr.getHours().toString().padStart(2,'0');
+				var min = dateStr.getMinutes().toString().padStart(2,'0');
+				var s = dateStr.getSeconds().toString().padStart(2,'0');
+				return `${y}-${m}-${d}  ${h}:${min}:${s}`;
+			})
+			
+			//定义全局自定义指令，获取焦点
+			Vue.directive('focus',{
+				inserted:function(el){
+					el.focus();
+				}
+			})
+			
+			var vm = new Vue({
+				el: "#app",
+				data: {
+					gid:null,
+					gname:"",
+					keywords:"",
+					list: [{
+							id: 10000,
+							name: "百事可乐",
+							addtime: new Date()
+						},
+						{
+							id: 10001,
+							name: "乐事薯片",
+							addtime: new Date()
+						},
+					]
+				},
+				methods: {
+					add:function(){
+						if(this.gid==null||this.gname==''){
+							alert("请输入数据");
+							return;
+						}
+						var additem ={id:this.gid,name:this.gname,addtime:new Date()};
+						this.list.push(additem);
+						this.gid=this.gname='';
+					},
+					del:function(id){
+						//寻找指定匹配索引
+						var index=this.list.findIndex( item =>{
+							if(item.id==id){
+								return true;
+							}
+						})
+						this.list.splice(index,1);
+					},
+					search:function(keywords){
+						var newlist=[];
+						this.list.forEach( item =>{
+							if(item.name.indexOf(keywords) !=-1){
+								newlist.push(item);
+							}
+						})
+						return newlist;
+					}
+				},
+				//可以定义私有过滤器
+				filters:{
+					
+				},
+				directives:{
+					"color":{
+						bind:function(el,obj){
+							el.style.color = obj.value;
+						}
+					},
+					//简写
+					"fontsize":function(el){
+						el.style.fontSize = 10+"px";
+					}
+				}
+			})
+		</script>
+	</body>
+
+</html>

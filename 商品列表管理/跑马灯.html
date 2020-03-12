@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>跑马灯效果</title>
+		<script src="js/vue.js"></script>
+	</head>
+	<body>
+		<div id="box">
+			<p>{{ message }}</p>
+			<button @click="run">运动</button>
+			<button @click="stop">停止</button>
+		</div>
+		<script>
+			var vm = new Vue({
+				el:"#box",
+				data:{
+					message:"这是一条广告. ",
+					timerId:null
+				},
+				methods:{
+					
+					run:function(){
+						if(this.timerId!=null){
+							return;
+						}
+						//es6用箭头函数解决this指向问题
+						this.timerId=setInterval(()=>{
+							var str = this.message;
+							var start = str.substring(0,1);
+							var end = str.substring(1);
+							this.message = end + start;
+						},200)
+
+					},
+//					run:function(){
+//						var _this = this;//传统解决this指向问题
+//						setInterval(function(){
+//							var str = _this.message;
+//							var start = str.substring(0,1);
+//							var end = str.substring(1);
+//							_this.message = end + start;
+//						},200)
+//
+//					}
+					stop:function(){
+						clearInterval(this.timerId);
+						this.timerId=null;
+					}
+					
+				}
+			})
+		</script>
+	</body>
+</html>

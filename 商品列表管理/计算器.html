@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>计算器</title>
+		<script type="text/javascript" src="js/vue.js" ></script>
+	</head>
+	<body>
+		<div id="box">
+			
+			<input type="text" v-model="num1" />		
+			<select v-model="opt">
+				<option value="+">+</option>
+				<option value="-">-</option>
+				<option value="*">*</option>
+				<option value="/">/</option>
+			</select>
+			<input type="text" v-model="num2" />
+			<button @click="calculate">=</button>
+			<input type="text" v-model="result" />
+		</div>
+		
+		
+		
+		<script>
+			var vm = new Vue({
+				el:"#box",
+				data:{
+					num1:0,
+					num2:0,
+					opt:"+",
+					result:0
+				},
+				methods:{
+					calculate:function(){
+						switch(this.opt){
+							case "+":
+							this.result=parseFloat(this.num1)+parseFloat(this.num2);
+							break;
+							case "-":
+							this.result=parseFloat(this.num1)-parseFloat(this.num2);
+							break;
+							case "*":
+							this.result=parseFloat(this.num1)*parseFloat(this.num2);
+							break;
+							case "/":
+							this.result=parseFloat(this.num1)/parseFloat(this.num2);
+							break;
+						}
+//						//另外的方法
+//						var str = "parseFloat(this.num1)"+this.opt+"parseFloat(this.num2)";
+//						this.result = eval(str);
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
